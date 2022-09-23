@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>BasketballDB</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+  </head>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.2/umd/popper.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-adapter-moment/1.0.0/chartjs-adapter-moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/rivets/0.9.6/rivets.bundled.min.js"></script>
+  <body id="content">
+    <section id="menu">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-end">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="./index.html">Home</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="navbarSupportedContent" rv-if="users.role" rv-show="users.role">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="./drills.html">Drills</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./players.html">Players</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./scores.html">Scores</a>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="collapse navbar-collapse flex-grow-0" id="navbarNavDarkDropdown">
+            <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  {users.principal.firstname} {users.principal.lastname}
+                </a>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
+                  <div class="dropdown-header" rv-text="users.principal.username"></div>
+                  <a class="dropdown-item" href="./settings.html">Settings</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="./users/clear">Disconnect</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </section>
+    <section id="title" class="">
+      <div class="container-fluid px-5 pt-5 pb-2">
+        <h1 class="display-4">BasketballDB <small class="lead">sport performance tracker</small></h1>
+        <hr />
+      </div>
+    </section>
+    <section class="container-fluid px-5">
+      <div class="row justify-content-center" rv-hide="users.role">
+        <div class="col-3 order-first" rv-show="users.statsByDrill">
+          <h4 class="h4 display-6">Statistics</h4>
+          <div class="align-items-start">
+            <div class="list-group list-group-flush">
+              <div class="list-group-item list-group-item-action" aria-current="true" rv-each-stats="users.statsByDrill" rv-on-click="scores.doSelect">
+                <div class="d-flex w-100 justify-content-between">
+                  <p class="mb-1" rv-text="stats.drill.name"></p>
+                  <p><span rv-text="stats.average | float"></span></p>
+                </div>
+                <p class="mb-1 d-flex w-100 justify-content-between">
+                  <small>count: <span rv-text="stats.count"></span></small>
+                  <small>min: <span rv-text="stats.min"></span></small>
+                  <small>max: <span rv-text="stats.max"></span></small>
+                </p>
+              </div>
+            </div>      
+           <form class="pt-5">
+             <fieldset>
+               <div class="mb-3">
+                 <label for="scores-start" class="form-label">Start</label>
+                 <input type="date" class="form-control" id="scores-start" rv-value="scores.start">
+               </div>
+               <div class="mb-3">
+                 <label for="scores-stop" class="form-label">Stop</label>
+                 <input type="date" class="form-control" id="scores-stop" rv-value="scores.stop">
+               </div>
+                <div class="text-end d-flex">
+                  <button type="button" class="btn btn-outline-secondary me-auto" rv-on-click="scores.doReset">Cancel</button>
+                  <button type="button" class="btn btn-outline-primary" rv-on-click="scores.doUpdate">Update</button>
+                </div>
+             </fieldset>
+           </form>
+          </div>
+        </div>
+        <div class="col-9 order-last">
+          <div class="chart-container">
+            <canvas id="player-chart"></canvas>
+          </div>
+
+          <div class="py-5" rv-show="users.scores">
+          
+            <h6 class="h6">scores for <span rv-text="scores.drill.name"></span></h6>
+            <table class="table table-hover fw-light fs-6">
+              <thead>
+                <tr>
+                  <th scope="col">date</th>
+                  <th scope="col">time</th>
+                  <th scope="col">score</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr rv-each-score="users.scores">
+                  <td><span rv-text="score.date | date"></span></td>
+                  <td><span rv-text="score.date | time"></span></td>
+                  <td><span rv-text="score.value"></span></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+            <div class="text-end d-flex">
+              <button type="button" class="btn btn-outline-secondary me-auto" rv-on-click="scores.doClear">Clear</button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+        
+    </section>
+    <footer class="footer fixed-bottom">
+      <p class="text-center">Copyright © 2022. Jérôme Rocheteau. All rights reserved.</p>
+    </footer>
+  </body>
+  <script type="text/javascript" src="./basketballdb.js"></script>
+  <script type="text/javascript" src="./index.js"></script>
+</html>

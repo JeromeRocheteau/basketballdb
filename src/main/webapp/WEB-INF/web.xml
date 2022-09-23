@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://java.sun.com/xml/ns/javaee" 
+	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+	version="3.0">
+
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+
+  <resource-ref>
+    <description>JDBC Resource</description>
+    <res-ref-name>jdbc/database</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
+
+  <context-param>
+    <param-name>jdbc-resource</param-name>
+    <param-value>jdbc/database</param-value>
+  </context-param>
+
+  <!-- listeners -->
+  
+  <listener>
+    <listener-class>com.github.jeromerocheteau.JdbcListener</listener-class>
+  </listener>
+  
+  <!-- filters -->
+  
+  <filter>
+    <filter-name>character-encoding-filter</filter-name>
+    <filter-class>com.github.jeromerocheteau.basketballdb.filters.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>request-character-encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>response-character-encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+
+  <!-- filter mappings -->
+  
+  <filter-mapping>
+    <filter-name>character-encoding-filter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  
+  <!-- users servlets -->
+
+  <servlet>
+    <servlet-name>users-clear</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.users.Clear</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>users-name</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.users.Name</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/users/select-one.sql</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet>
+    <servlet-name>users-role</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.users.Role</servlet-class>
+    <init-param>
+      <param-name>role</param-name>
+      <param-value>coach</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet>
+    <servlet-name>users-password</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.users.Password</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/users/update-password.sql</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet>
+    <servlet-name>users-profile</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.users.Profile</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/users/update.sql</param-value>
+    </init-param>
+  </servlet>
+    
+  <!-- users servlets mappings -->
+  
+  <servlet-mapping>
+    <servlet-name>users-clear</servlet-name>
+    <url-pattern>/users/clear</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>users-name</servlet-name>
+    <url-pattern>/users/name</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>users-role</servlet-name>
+    <url-pattern>/users/role</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>users-password</servlet-name>
+    <url-pattern>/users/password</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>users-profile</servlet-name>
+    <url-pattern>/users/profile</url-pattern>
+  </servlet-mapping>
+
+  <!-- drills servlets -->
+
+  <servlet>
+    <servlet-name>drills-count</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.commons.Count</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/drills/count.sql</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet>
+    <servlet-name>drills-select</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.drills.SelectSomeDrills</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/drills/select-some.sql</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet>
+    <servlet-name>drills-insert</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.drills.InsertOneDrill</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/drills/insert.sql</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet>
+    <servlet-name>drills-update</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.drills.UpdateOneDrill</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/drills/update.sql</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet>
+    <servlet-name>drills-delete</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.drills.DeleteOneDrill</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/drills/delete.sql</param-value>
+    </init-param>
+  </servlet>
+    
+  <!-- drills servlets mappings -->
+  
+  <servlet-mapping>
+    <servlet-name>drills-count</servlet-name>
+    <url-pattern>/drills/count</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>drills-select</servlet-name>
+    <url-pattern>/drills/select</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>drills-insert</servlet-name>
+    <url-pattern>/drills/insert</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>drills-update</servlet-name>
+    <url-pattern>/drills/update</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>drills-delete</servlet-name>
+    <url-pattern>/drills/delete</url-pattern>
+  </servlet-mapping>
+  
+  <!-- scores servlets -->
+  
+  <servlet>
+    <servlet-name>users-scores</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.scores.SelectSomeUserScores</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/scores/select-some-user.sql</param-value>
+    </init-param>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>users-session-stats</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.scores.SelectSomeUserStats</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/scores/select-some-user-session-stats.sql</param-value>
+    </init-param>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>users-drill-stats</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.scores.SelectSomeUserStats</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/scores/select-some-user-stats.sql</param-value>
+    </init-param>
+  </servlet>
+    
+  <!-- scores servlets mappings -->
+  
+  <servlet-mapping>
+    <servlet-name>users-scores</servlet-name>
+    <url-pattern>/users/scores</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>users-session-stats</servlet-name>
+    <url-pattern>/users/stats/session</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>users-drill-stats</servlet-name>
+    <url-pattern>/users/stats/drill</url-pattern>
+  </servlet-mapping>
+  
+  <!-- constraints -->
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>public</web-resource-name>
+      <url-pattern>/connect.html</url-pattern>
+      <url-pattern>/failure.html</url-pattern>
+      <url-pattern>/users/clear</url-pattern>
+    </web-resource-collection>
+  </security-constraint>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>protected</web-resource-name>
+      <url-pattern>/index.html</url-pattern>
+      <url-pattern>/index.js</url-pattern>
+      <url-pattern>/settings.html</url-pattern>
+      <url-pattern>/settings.js</url-pattern>
+      <url-pattern>/users/name</url-pattern>
+      <url-pattern>/users/password</url-pattern>
+      <url-pattern>/users/profile</url-pattern>
+      <url-pattern>/scores/session</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>player</role-name>
+      <role-name>coach</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>private</web-resource-name>
+      <url-pattern>/drills.html</url-pattern>
+      <url-pattern>/players.html</url-pattern>
+      <url-pattern>/scores.html</url-pattern>
+      <url-pattern>/drills.js</url-pattern>
+      <url-pattern>/players.js</url-pattern>
+      <url-pattern>/scores.js</url-pattern>
+      <url-pattern>/drills/count</url-pattern>
+      <url-pattern>/drills/select</url-pattern>
+      <url-pattern>/drills/insert</url-pattern>
+      <url-pattern>/drills/update</url-pattern>
+      <url-pattern>/drills/delete</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>coach</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+  <security-role>
+    <role-name>player</role-name>
+  </security-role>
+
+  <security-role>
+    <role-name>coach</role-name>
+  </security-role>
+
+  <login-config>
+    <auth-method>FORM</auth-method>
+    <form-login-config>
+      <form-login-page>/security/index.html</form-login-page>
+      <form-error-page>/security/failure.html</form-error-page>
+    </form-login-config>
+  </login-config>
+
+</web-app>

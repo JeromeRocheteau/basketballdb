@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>BasketballDB</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+  </head>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.2/umd/popper.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-adapter-moment/1.0.0/chartjs-adapter-moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/rivets/0.9.6/rivets.bundled.min.js"></script>
+  <body id="content">
+    <section id="menu">
+      <div class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/basketballdb/index.html">Home</a>
+        </div>
+      </div>
+    </section>
+    <section id="title" class="">
+      <div class="container-fluid p-5">
+        <h1 class="display-4">BasketballDB <small class="lead">sport performance tracker</small></h1>
+        <hr />
+      </div>
+    </section>
+    <section class="container">
+      <div class="row justify-content-center">
+      <form class="form col-6" method="post" action="/basketballdb/j_security_check">
+        <fieldset>
+          <legend>Connection</legend>
+          <div class="mb-3">
+            <label class="control-label" for="username">Username</label>
+            <div class="">
+              <input id="username" name="j_username" type="text" placeholder="username" class="form-control" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="control-label" for="password">Password</label>
+            <div class="">
+              <input id="password" name="j_password" type="password" placeholder="password" class="form-control" required>
+            </div>
+          </div>
+          <div class="mb-3 d-flex justify-content-between">
+            <button type="reset" class="btn btn-outline-secondary">Reset</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </fieldset>
+      </form>
+      </div>
+    </section>
+    <footer class="footer fixed-bottom">
+      <p class="text-center">Copyright © 2022. Jérôme Rocheteau. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
