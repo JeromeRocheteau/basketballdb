@@ -1,4 +1,5 @@
 var content = {};
+content.display = false;
 
 rivets.bind($('#content'), content);
 
@@ -115,6 +116,7 @@ var getUserStatsBySession = function() {
 		content.users.statsBySession = response;
 		setValues(content.users.statsBySession);
 		setChart();
+		content.display = true;
 	}, function onError(response) {
 		content.users.statsBySession = [];
 		console.log(response);

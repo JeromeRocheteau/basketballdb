@@ -24,7 +24,7 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           
-          <div class="collapse navbar-collapse" id="navbarSupportedContent" rv-if="users.role" rv-show="users.role">
+          <div class="collapse navbar-collapse" id="navbarSupportedContent" rv-show="users.role">
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a class="nav-link" href="./drills.html">Drills</a>
@@ -56,14 +56,14 @@
         </div>
       </nav>
     </section>
-    <section id="title" class="">
+    <section id="title">
       <div class="container-fluid px-5 pt-5 pb-2">
         <h1 class="display-4">BasketballDB <small class="lead">sport performance tracker</small></h1>
         <hr />
       </div>
     </section>
-    <section class="container-fluid px-5">
-      <div class="row justify-content-center" rv-hide="users.role">
+    <section class="container-fluid px-5" rv-show="display">
+      <div class="row justify-content-center">
         <div class="col-3 order-first" rv-show="users.statsByDrill">
           <h4 class="h4 display-6">Statistics</h4>
           <div class="align-items-start">
@@ -105,7 +105,7 @@
 
           <div class="py-5" rv-show="users.scores">
           
-            <h6 class="h6">scores for <span rv-text="scores.drill.name"></span></h6>
+            <h6 class="display-6">Scores for <span rv-text="scores.drill.name"></span></h6>
             <table class="table table-hover fw-light fs-6">
               <thead>
                 <tr>
@@ -121,13 +121,13 @@
                   <td><span rv-text="score.value"></span></td>
                 </tr>
               </tbody>
-              <tfoot>
+              <!-- tfoot>
                 <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <th scope="row">date</th>
+                  <th scope="row">time</th>
+                  <th scope="row">score</th>
                 </tr>
-              </tfoot>
+              </tfoot -->
             </table>
             <div class="text-end d-flex">
               <button type="button" class="btn btn-outline-secondary me-auto" rv-on-click="scores.doClear">Clear</button>
