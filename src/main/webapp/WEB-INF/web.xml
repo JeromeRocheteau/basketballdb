@@ -196,6 +196,15 @@
   </servlet-mapping>
   
   <!-- scores servlets -->
+
+  <servlet>
+    <servlet-name>users-drills</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.drills.SelectUserScoreDrills</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/drills/select-all-user-score.sql</param-value>
+    </init-param>
+  </servlet>
   
   <servlet>
     <servlet-name>users-scores</servlet-name>
@@ -225,6 +234,11 @@
   </servlet>
     
   <!-- scores servlets mappings -->
+  
+  <servlet-mapping>
+    <servlet-name>users-drills</servlet-name>
+    <url-pattern>/users/drills</url-pattern>
+  </servlet-mapping>
   
   <servlet-mapping>
     <servlet-name>users-scores</servlet-name>
@@ -262,7 +276,10 @@
       <url-pattern>/users/name</url-pattern>
       <url-pattern>/users/password</url-pattern>
       <url-pattern>/users/profile</url-pattern>
-      <url-pattern>/scores/session</url-pattern>
+      <url-pattern>/users/drills</url-pattern>
+      <url-pattern>/users/scores</url-pattern>
+      <url-pattern>/users/stats/drill</url-pattern>
+      <url-pattern>/users/stats/session</url-pattern>
     </web-resource-collection>
     <auth-constraint>
       <role-name>player</role-name>

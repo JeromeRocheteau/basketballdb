@@ -77,6 +77,23 @@ basketballdb.users.profile = function(data, onSuccess, onError) {
   req.send(null);    
 };
 
+basketballdb.users.drills = function(start, stop, onSuccess, onError) {
+  const req = new XMLHttpRequest();
+  req.onload = function(event) {
+    if (this.status === 200) {
+      onSuccess(JSON.parse(this.responseText));
+    } else {
+      onError(this.responseText);
+    }
+  };
+  req.onerror = function(event) {
+    onError(this.responseText);
+  }
+  const parameters = '?start=' + start + '&stop=' + stop; 
+  req.open('GET','./users/drills' + parameters, true);
+  req.send(null);    
+};
+
 basketballdb.users.scores = function(drill, start, stop, onSuccess, onError) {
   const req = new XMLHttpRequest();
   req.onload = function(event) {
