@@ -65,54 +65,111 @@
       </div>
     </section>
     <section class="container-fluid px-5" rv-show="display">
-      <div class="row justify-content-center">
-        <div class="col-3 order-first" rv-show="users.statsByDrill">
-          <h4 class="h4 display-6">Statistics</h4>
-          <div class="align-items-start">
-            <div class="list-group list-group-flush">
-              <div class="list-group-item list-group-item-action" aria-current="true" rv-each-stats="users.statsByDrill" rv-on-click="scores.doSelect">
-                <div class="d-flex w-100 justify-content-between">
-                  <p class="mb-1" rv-text="stats.drill.name"></p>
-                  <p><span rv-text="stats.average | float"></span></p>
+    
+      <div class="row">
+        <ul class="nav nav-tabs" id="user-tab" role="tablist">
+          <li class="nav-item">
+            <button class="nav-link active" id="stats-tab" data-bs-toggle="tab" data-bs-target="#stats" type="button" role="tab" aria-controls="stats" aria-selected="true">Stats</button> 
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" id="scores-tab" data-bs-toggle="tab" data-bs-target="#scores" type="button" role="tab" aria-controls="scores" aria-selected="true">Scores</button> 
+          </li>
+        </ul>
+      </div>
+      
+      <div class="tab-content" id="user-tab-content">
+        <div class="tab-pane fade show active" id="stats" role="tabpanel" aria-labelledby="stats-tab">
+        
+          <div class="row justify-content-center pt-5">
+          <div class="col-3 order-first">
+            <h4 class="h4 display-6">Statistics</h4>
+            <div class="align-items-start">
+              <div class="list-group list-group-flush">
+                <div class="list-group-item" aria-current="true" rv-each-stats="users.statsByDrill">
+                  <div class="d-flex w-100 justify-content-between">
+                    <p class="mb-1" rv-text="stats.drill.name"></p>
+                    <p><span rv-text="stats.average | float"></span></p>
+                  </div>
+                  <p class="mb-1 d-flex w-100 justify-content-between">
+                    <small>count: <span rv-text="stats.count"></span></small>
+                    <small>min: <span rv-text="stats.min"></span></small>
+                    <small>max: <span rv-text="stats.max"></span></small>
+                  </p>
                 </div>
-                <p class="mb-1 d-flex w-100 justify-content-between">
-                  <small>count: <span rv-text="stats.count"></span></small>
-                  <small>min: <span rv-text="stats.min"></span></small>
-                  <small>max: <span rv-text="stats.max"></span></small>
-                </p>
               </div>
-            </div>      
-           <form class="pt-5">
-             <fieldset>
-               <div class="mb-3">
-                 <label for="scores-start" class="form-label">Start</label>
-                 <input type="date" class="form-control" id="scores-start" rv-value="scores.start">
-               </div>
-               <div class="mb-3">
-                 <label for="scores-stop" class="form-label">Stop</label>
-                 <input type="date" class="form-control" id="scores-stop" rv-value="scores.stop">
-               </div>
-                <div class="text-end d-flex">
-                  <button type="button" class="btn btn-outline-secondary me-auto" rv-on-click="scores.doReset">Cancel</button>
-                  <button type="button" class="btn btn-outline-primary" rv-on-click="scores.doUpdate">Update</button>
-                </div>
-             </fieldset>
-           </form>
+             <form class="pt-5">
+               <fieldset>
+                 <div class="mb-3">
+                   <label for="scores-start" class="form-label">Start</label>
+                   <input type="date" class="form-control" id="scores-start" rv-value="scores.start">
+                 </div>
+                 <div class="mb-3">
+                   <label for="scores-stop" class="form-label">Stop</label>
+                   <input type="date" class="form-control" id="scores-stop" rv-value="scores.stop">
+                 </div>
+                  <div class="text-end d-flex">
+                    <button type="button" class="btn btn-outline-secondary me-auto" rv-on-click="scores.doReset">Cancel</button>
+                    <button type="button" class="btn btn-outline-primary" rv-on-click="scores.doUpdate">Update</button>
+                  </div>
+               </fieldset>
+             </form>
+            </div>
           </div>
+          <div class="col-9 order-last">
+            <div class="chart-container">
+              <canvas id="player-chart"></canvas>
+            </div>
+          </div>
+          </div>
+        
         </div>
-        <div class="col-9 order-last">
-          <div class="chart-container">
-            <canvas id="player-chart"></canvas>
+        <div class="tab-pane fade" id="scores" role="tabpanel" aria-labelledby="scores-tab">
+        
+          <div class="row justify-content-center pt-5">
+          <div class="col-3 order-first">
+            <h4 class="h4 display-6">Drills</h4>
+            <div class="align-items-start">
+              <div class="list-group list-group-flush">
+                <div class="list-group-item list-group-item-action" aria-current="true" rv-each-stats="users.statsByDrill" rv-on-click="scores.doSelect">
+                  <div class="d-flex w-100 justify-content-between">
+                    <p class="mb-1" rv-text="stats.drill.name"></p>
+                    <p>avg: <span rv-text="stats.average | float"></span></p>
+                  </div>
+                  <p class="mb-1 d-flex w-100 justify-content-between">
+                    <small>count: <span rv-text="stats.count"></span></small>
+                    <small>min: <span rv-text="stats.min"></span></small>
+                    <small>max: <span rv-text="stats.max"></span></small>
+                  </p>
+                </div>
+              </div>
+            </div>
+             <form class="pt-5">
+               <fieldset>
+                 <div class="mb-3">
+                   <label for="scores-start" class="form-label">Start</label>
+                   <input type="date" class="form-control" id="scores-start" rv-value="scores.start">
+                 </div>
+                 <div class="mb-3">
+                   <label for="scores-stop" class="form-label">Stop</label>
+                   <input type="date" class="form-control" id="scores-stop" rv-value="scores.stop">
+                 </div>
+                  <div class="text-end d-flex">
+                    <button type="button" class="btn btn-outline-secondary me-auto" rv-on-click="scores.doReset">Cancel</button>
+                    <button type="button" class="btn btn-outline-primary" rv-on-click="scores.doUpdate">Update</button>
+                  </div>
+               </fieldset>
+             </form>
           </div>
+          <div class="col-9 order-last">
 
-          <div class="py-5" rv-show="users.scores">
-          
             <h6 class="display-6">Scores for <span rv-text="scores.drill.name"></span></h6>
-            <table class="table table-hover fw-light fs-6">
+            <table class="table table-hover fw-light fs-6" rv-show="users.scores">
               <thead>
                 <tr>
                   <th scope="col">date</th>
                   <th scope="col">time</th>
+                  <th scope="col">user</th>
+                  <th scope="col">drill</th>
                   <th scope="col">score</th>
                 </tr>
               </thead>
@@ -120,23 +177,27 @@
                 <tr rv-each-score="users.scores">
                   <td><span rv-text="score.date | date"></span></td>
                   <td><span rv-text="score.date | time"></span></td>
+                  <td><span rv-text="score.user.firstname"></span>&nbsp;<span rv-text="score.user.lastname"></span></td>
+                  <td><span rv-text="score.drill.name"></span></td>
                   <td><span rv-text="score.value"></span></td>
                 </tr>
               </tbody>
-              <!-- tfoot>
+              <tfoot>
                 <tr>
-                  <th scope="row">date</th>
-                  <th scope="row">time</th>
-                  <th scope="row">score</th>
+                  <th scope="col">date</th>
+                  <th scope="col">time</th>
+                  <th scope="col">user</th>
+                  <th scope="col">drill</th>
+                  <th scope="col">score</th>
                 </tr>
-              </tfoot -->
+              </tfoot>
             </table>
             <div class="text-end d-flex">
               <button type="button" class="btn btn-outline-secondary me-auto" rv-on-click="scores.doClear">Clear</button>
             </div>
 
           </div>
-
+          </div>
         </div>
       </div>
         

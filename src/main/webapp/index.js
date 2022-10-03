@@ -133,8 +133,8 @@ var getUserStatsByDrill = function() {
 };
 
 content.scores.doReset = function() {
-	content.scores.start = moment().startOf('month').format('YYYY-MM-DD');
-	content.scores.stop = moment().endOf('month').format('YYYY-MM-DD');
+	content.scores.start = moment().startOf('year').format('YYYY-MM-DD');
+	content.scores.stop = moment().endOf('year').format('YYYY-MM-DD');
 	content.scores.doUpdate();
 };
 
