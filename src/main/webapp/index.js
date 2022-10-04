@@ -18,7 +18,8 @@ rivets.formatters.float = function(value){
 /* users */
 
 content.users = {};
-
+content.users.role = false;
+			
 var getUserPrincipal = function() {
 	basketballdb.users.name(function onSuccess(response) {
 		content.users.principal = response;
@@ -36,20 +37,26 @@ var getUserPrincipal = function() {
 
 var chart = null;
 
+content.colors = {};
+// FIXME
+content.colors['Johannès'] = "#0000ff";
+content.colors['Batum'] = "#00ff00";
+content.colors['Fournier'] = "#ff0000";
+content.colors['Gruda'] = "#000000";
+
 content.scores = {};
 
-// FIXME
-content.scores['Johannès'] = [];
-content.scores['Batum'] = [];
-content.scores['Fournier'] = [];
-content.scores['Gruda'] = [];
+content.statistics = {};
 
 var doEmpty = function() {
-	// FIXME
-	while (content.scores['Johannès'].length > 0) {content.scores['Johannès'].pop()};
-	while (content.scores['Batum'].length > 0) {content.scores['Batum'].pop()};
-	while (content.scores['Fournier'].length > 0) {content.scores['Fournier'].pop()};
-	while (content.scores['Gruda'].length > 0) {content.scores['Gruda'].pop()};
+	for (var i in content.scores) {
+		var scores = content.scores[i];
+		if (Array.isArray(scores)) {
+			while (scores.length > 0) {
+				scores.pop();
+			}
+		};	
+	}
 };
 
 var setValues = function(items) {
@@ -61,36 +68,45 @@ var setValues = function(items) {
 		    // var player = item.user;
 		    var date = moment(item.date);
 		    var average = parseInt(item.average);
-		    content.scores[drill].push({x : date, y: average});
+			if (content.scores[drill]) {
+				content.scores[drill].push({x : date, y: average});
+			} else {
+				content.scores[drill] = [];
+				content.scores[drill].push({x : date, y: average});	
+			}
 		} catch (error) {
 		    console.log(error);
 		}
     }
 };
 
+var getDatasets = function() {
+	var datasets = [];
+	for (var name in content.scores) {
+		var scores = content.scores[name];
+		var color = "#757575";
+		if (content.colors[name]) {
+			color = content.colors[name];
+		}
+		if (Array.isArray(scores)) {
+			var dataset = { label: name, fill: false, tension : 0.4, backgroundColor: color, borderColor: color, data: scores };
+			datasets.push(dataset);
+		};	
+	}
+	return datasets;
+}
+
 var setChart = function() {
     var label = content.users.principal.firstname + " " + content.users.principal.lastname;
-
-    // FIXME
-    rgbJohannes = 'rgb(0,0,255)';
-    rgbBatum = 'rgb(0,255,0)';
-    rgbFournier = 'rgb(255,0,0)';
-    rgbGruda = 'rgb(0,0,0)';
-
+	var datasets = getDatasets();
     var context = document.getElementById('player-chart').getContext('2d');
     var payload = {
 		type: 'line',
-		data: { datasets: [
-			// FIXME
-		    { label: "Johannès", fill: false, tension : 0.4, backgroundColor: rgbJohannes, borderColor: rgbJohannes, data: content.scores['Johannès'] },	
-		    { label: "Batum", fill: false, tension : 0.4, backgroundColor: rgbBatum, borderColor: rgbBatum, data: content.scores['Batum'] },
-		    { label: "Fournier", fill: false, tension : 0.4, backgroundColor: rgbFournier, borderColor: rgbFournier, data: content.scores['Fournier'] },
-		    { label: "Gruda", fill: false, tension : 0.4, backgroundColor: rgbGruda, borderColor: rgbGruda, data: content.scores['Gruda'] }
-		] },
+		data: { datasets: datasets },
 		options : {
 		    plugins : { title : { display : true, text: label}},
 		    scales : {
-				x: { type : 'time', time : {unit: 'day', displayFormats: { day: 'YYYY-MM-DD' }}, min: content.scores.start, max: content.scores.stop},
+				x: { type : 'time', time : {unit: 'day', displayFormats: { day: 'YYYY-MM-DD' }}, min: content.statistics.start, max: content.statistics.stop},
 				y : { type : 'linear', beginAtZero: true, suggestedMin : 0, suggestedMax: 25} // FIXME
 		    }
 		}
@@ -103,7 +119,7 @@ var setChart = function() {
 };
 
 var getUserScores = function() {
-	basketballdb.users.scores(content.scores.start, content.scores.stop, function onSuccess(response) {
+	basketballdb.users.scores(content.statistics.start, content.statistics.stop, function onSuccess(response) {
 		content.users.scores = response;
 	}, function onError(response) {
 		content.users.scores = [];
@@ -112,7 +128,7 @@ var getUserScores = function() {
 };
 
 var getUserStatsBySession = function() {
-	basketballdb.users.statsBySession(content.scores.start, content.scores.stop, function onSuccess(response) {
+	basketballdb.users.statsBySession(content.statistics.start, content.statistics.stop, function onSuccess(response) {
 		content.users.statsBySession = response;
 		setValues(content.users.statsBySession);
 		setChart();
@@ -124,7 +140,7 @@ var getUserStatsBySession = function() {
 };
 
 var getUserStatsByDrill = function() {
-	basketballdb.users.statsByDrill(content.scores.start, content.scores.stop, function onSuccess(response) {
+	basketballdb.users.statsByDrill(content.statistics.start, content.statistics.stop, function onSuccess(response) {
 		content.users.statsByDrill = response;
 	}, function onError(response) {
 		content.users.statsByDrill = [];
@@ -132,26 +148,24 @@ var getUserStatsByDrill = function() {
 	});
 };
 
-content.scores.doReset = function() {
-	content.scores.start = moment().startOf('year').format('YYYY-MM-DD');
-	content.scores.stop = moment().endOf('year').format('YYYY-MM-DD');
-	content.scores.doUpdate();
+content.statistics.doReset = function() {
+	content.statistics.start = moment().startOf('year').format('YYYY-MM-DD');
+	content.statistics.stop = moment().endOf('year').format('YYYY-MM-DD');
+	content.statistics.doUpdate();
 };
 
-content.scores.doClear = function() {
+content.statistics.doClear = function() {
 	content.users.scores = null;
 };
 
-content.scores.doUpdate = function() {
+content.statistics.doUpdate = function() {
 	getUserStatsByDrill();
 	getUserStatsBySession();
 };
 
-content.scores.doSelect = function(event, item) {
-	console.log(item);
-	console.log(item.stats.drill);
-	content.scores.drill = item.stats.drill;
-	basketballdb.users.scores(content.scores.drill.id, content.scores.start, content.scores.stop, function onSuccess(response) {
+content.statistics.doSelect = function(event, item) {
+	content.statistics.drill = item.stats.drill;
+	basketballdb.users.scores(content.statistics.drill.id, content.statistics.start, content.statistics.stop, function onSuccess(response) {
 		content.users.scores = response;
 	}, function onError(response) {
 		content.users.scores = [];
@@ -163,7 +177,7 @@ content.scores.doSelect = function(event, item) {
 
 var doInit = function () {
 	getUserPrincipal();
-	content.scores.doReset();
+	content.statistics.doReset();
 }
 
 document.addEventListener("DOMContentLoaded", doInit);
