@@ -6,4 +6,5 @@ select
   d.`min` as `min`,
   d.`max` as `max`
 from `drills` as d
+where d.`owner` = ?
 limit ?,?;

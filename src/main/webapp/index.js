@@ -1,5 +1,8 @@
 var content = {};
-content.display = false;
+content.displays = {};
+content.displays.player = false;
+content.displays.coach = false;
+content.displays.all = false;
 
 rivets.bind($('#content'), content);
 
@@ -132,7 +135,6 @@ var getUserStatsBySession = function() {
 		content.users.statsBySession = response;
 		setValues(content.users.statsBySession);
 		setChart();
-		content.display = true;
 	}, function onError(response) {
 		content.users.statsBySession = [];
 		console.log(response);
@@ -159,8 +161,17 @@ content.statistics.doClear = function() {
 };
 
 content.statistics.doUpdate = function() {
-	getUserStatsByDrill();
-	getUserStatsBySession();
+	if (content.users.role == true) {
+		content.displays.coach = true;
+		content.displays.player = false;
+		content.displays.all = true;		
+	} else {
+		getUserStatsByDrill();
+		getUserStatsBySession();
+		content.displays.coach = false;
+		content.displays.player = true;
+		content.displays.all = true;
+	}
 };
 
 content.statistics.doSelect = function(event, item) {

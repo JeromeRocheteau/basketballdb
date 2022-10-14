@@ -15,6 +15,8 @@ public class Drill {
 	private Integer min;
 	
 	private Integer max;
+	
+	private User owner;
 
 	public Integer getId() {
 		return id;
@@ -64,7 +66,15 @@ public class Drill {
 		this.max = max;
 	}
 
-	public Drill(Integer id, String name, String desc, Time duration, Integer min, Integer max) {
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
+
+	public Drill(Integer id, String name, String desc, Time duration, Integer min, Integer max, User owner) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -72,6 +82,7 @@ public class Drill {
 		this.duration = duration;
 		this.min = min;
 		this.max = max;
+		this.owner = owner;
 	}
 	
 }

@@ -63,7 +63,7 @@ public class SelectSomeUserStats extends SelectAll<Stats> {
 			Boolean userGender = resultSet.getBoolean("user_gender");
 			Date userBirthday = resultSet.getDate("user_birthday");
 			User user = new User(userUsername, userRolename, userFirstname, userLastname, userGender, userBirthday);
-			Drill drill = new Drill(drillId, drillName, drillDesc, drillDuration, drillMin, drillMax);
+			Drill drill = new Drill(drillId, drillName, drillDesc, drillDuration, drillMin, drillMax, null);
 			Stats stat = new Stats(date, count, average, min, max, drill, user);
 			stats.add(stat);
 		}

@@ -64,7 +64,7 @@ public class SelectSomeUserScores extends SelectAll<Score> {
 			Boolean userGender = resultSet.getBoolean("user_gender");
 			Date userBirthday = resultSet.getDate("user_birthday");
 			User user = new User(userUsername, userRolename, userFirstname, userLastname, userGender, userBirthday);
-			Drill drill = new Drill(drillId, drillName, drillDesc, drillDuration, drillMin, drillMax);
+			Drill drill = new Drill(drillId, drillName, drillDesc, drillDuration, drillMin, drillMax, null);
 			Score score = new Score(id, date, drill, user, value);
 			scores.add(score);
 		}

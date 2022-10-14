@@ -1,2 +1,2 @@
-insert into `drills` (`name`, `desc`, `duration`, `min`, `max`) 
-values (?, ?, ?, ?, ?);
+insert into `drills` (`name`, `desc`, `duration`, `min`, `max`, `owner`) 
+values (?, ?, ?, ?, ?, ?);

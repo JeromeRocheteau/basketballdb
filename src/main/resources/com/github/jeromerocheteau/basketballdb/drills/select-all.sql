@@ -5,4 +5,5 @@ select
   d.`duration` as `duration`,
   d.`min` as `min`,
   d.`max` as `max`
-from `drills` as d;
+from `drills` as d
+where d.`owner` = ?;

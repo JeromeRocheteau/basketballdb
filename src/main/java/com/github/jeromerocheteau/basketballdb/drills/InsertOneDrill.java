@@ -33,6 +33,7 @@ public class InsertOneDrill extends JdbcUpdateServlet<Integer> {
 
 	@Override
 	public void doFill(PreparedStatement statement, HttpServletRequest request) throws Exception {
+		String owner = request.getUserPrincipal().getName();
 		String name = request.getParameter("name");
 		String desc = request.getParameter("desc");
 		String string = request.getParameter("duration");
@@ -44,6 +45,7 @@ public class InsertOneDrill extends JdbcUpdateServlet<Integer> {
 		statement.setTime(3, new Time(duration));
 		statement.setInt(4, min);
 		statement.setInt(5, max);
+		statement.setString(6, owner);
 	}
 	
 	@Override
