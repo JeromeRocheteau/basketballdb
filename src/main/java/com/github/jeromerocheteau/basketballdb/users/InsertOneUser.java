@@ -1,9 +1,10 @@
-package com.github.jeromerocheteau.basketballdb.drills;
+package com.github.jeromerocheteau.basketballdb.users;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Time;
+import java.sql.Types;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -13,16 +14,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.github.jeromerocheteau.JdbcUpdateServlet;
 
-public class UpdateOneDrill extends JdbcUpdateServlet<Integer> {
+public class InsertOneUser extends JdbcUpdateServlet<Integer> {
 
-	private static final long serialVersionUID = 202209201050003L;
+	private static final long serialVersionUID = 202210141440001L;
 	
 	private DateFormat formatter;
 	
 	@Override 
 	public void init() throws ServletException {
 		super.init();
-		formatter = new SimpleDateFormat("HH:mm:ss");
+		formatter = new SimpleDateFormat("yyyy-MM-dd");
 	}
 	
 	@Override
@@ -33,21 +34,21 @@ public class UpdateOneDrill extends JdbcUpdateServlet<Integer> {
 
 	@Override
 	public void doFill(PreparedStatement statement, HttpServletRequest request) throws Exception {
-		Integer id = Integer.valueOf(request.getParameter("id"));
-		String name = request.getParameter("name");
-		String desc = request.getParameter("desc");
-		String string = request.getParameter("duration");
-		long duration = formatter.parse(string).getTime();
-		Integer min = Integer.valueOf(request.getParameter("min"));
-		Integer max = Integer.valueOf(request.getParameter("max"));
-		String color = request.getParameter("color");
-		statement.setString(1, name);
-		statement.setString(2, desc);
-		statement.setTime(3, new Time(duration));
-		statement.setInt(4, min);
-		statement.setInt(5, max);
-		statement.setString(5, color);
-		statement.setInt(7, id);
+		String username = request.getParameter("username");
+		String firstname = request.getParameter("firstname");
+		String lastname = request.getParameter("lastname");
+		Boolean gender = Boolean.valueOf(request.getParameter("gender"));
+		String birthday = request.getParameter("birthday");
+		statement.setString(1, username);
+		statement.setString(2, firstname);
+		statement.setString(3, lastname);
+		statement.setBoolean(4, gender);
+		if (birthday == null) {
+			statement.setNull(5, Types.DATE);
+		} else {
+			long time = formatter.parse(birthday).getTime();
+			statement.setDate(5, new Date(time));
+		}
 	}
 	
 	@Override

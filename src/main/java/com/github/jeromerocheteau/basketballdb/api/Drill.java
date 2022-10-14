@@ -16,6 +16,8 @@ public class Drill {
 	
 	private Integer max;
 	
+	private String color;
+	
 	private User owner;
 
 	public Integer getId() {
@@ -66,6 +68,14 @@ public class Drill {
 		this.max = max;
 	}
 
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
 	public User getOwner() {
 		return owner;
 	}
@@ -74,7 +84,7 @@ public class Drill {
 		this.owner = owner;
 	}
 
-	public Drill(Integer id, String name, String desc, Time duration, Integer min, Integer max, User owner) {
+	public Drill(Integer id, String name, String desc, Time duration, Integer min, Integer max, String color, User owner) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -82,6 +92,7 @@ public class Drill {
 		this.duration = duration;
 		this.min = min;
 		this.max = max;
+		this.color = color;
 		this.owner = owner;
 	}
 	

@@ -9,7 +9,8 @@ select
   d.`desc` as `drill_desc`,
   d.`duration` as `drill_duration`,
   d.`min` as `drill_min`,
-  d.`max` as `drill_max`
+  d.`max` as `drill_max`,
+  d.`color` as `drill_color`
 from `scores` as s
 inner join `drills` as d on d.`id` = s.`drill`
 where ? <= s.`date` 

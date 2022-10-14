@@ -6,4 +6,5 @@ select
   u.`gender` as `gender`,
   u.`birthday` as `birthday`
 from `users` as u
+where u.`username` <> ?
 limit ?,?;

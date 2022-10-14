@@ -1,8 +1,6 @@
 var content = {};
-content.displays = {};
-content.displays.player = false;
-content.displays.coach = false;
-content.displays.all = false;
+
+content.display = false;
 
 rivets.bind($('#content'), content);
 
@@ -39,16 +37,11 @@ var getUserPrincipal = function() {
 /* scores */
 
 var chart = null;
+var minimum = 0;
+var maximum = 20;
 
 content.colors = {};
-// FIXME
-content.colors['Johannès'] = "#0000ff";
-content.colors['Batum'] = "#00ff00";
-content.colors['Fournier'] = "#ff0000";
-content.colors['Gruda'] = "#000000";
-
 content.scores = {};
-
 content.statistics = {};
 
 var doEmpty = function() {
@@ -77,6 +70,16 @@ var setValues = function(items) {
 				content.scores[drill] = [];
 				content.scores[drill].push({x : date, y: average});	
 			}
+			if (content.colors[drill]) {
+			} else {
+				content.colors[drill] = item.drill.color;
+			}
+			if (average < content.minimum) {
+				minimum = average - 1;
+			}
+			if (content.maximum < average) {
+				maximum = average + 1;
+			}
 		} catch (error) {
 		    console.log(error);
 		}
@@ -87,7 +90,7 @@ var getDatasets = function() {
 	var datasets = [];
 	for (var name in content.scores) {
 		var scores = content.scores[name];
-		var color = "#757575";
+		var color = "#555555";
 		if (content.colors[name]) {
 			color = content.colors[name];
 		}
@@ -110,7 +113,7 @@ var setChart = function() {
 		    plugins : { title : { display : true, text: label}},
 		    scales : {
 				x: { type : 'time', time : {unit: 'day', displayFormats: { day: 'YYYY-MM-DD' }}, min: content.statistics.start, max: content.statistics.stop},
-				y : { type : 'linear', beginAtZero: true, suggestedMin : 0, suggestedMax: 25} // FIXME
+				y : { type : 'linear', beginAtZero: true, suggestedMin : minimum, suggestedMax: maximum} 
 		    }
 		}
     };
@@ -135,6 +138,7 @@ var getUserStatsBySession = function() {
 		content.users.statsBySession = response;
 		setValues(content.users.statsBySession);
 		setChart();
+		content.display = true;
 	}, function onError(response) {
 		content.users.statsBySession = [];
 		console.log(response);
@@ -162,15 +166,9 @@ content.statistics.doClear = function() {
 
 content.statistics.doUpdate = function() {
 	if (content.users.role == true) {
-		content.displays.coach = true;
-		content.displays.player = false;
-		content.displays.all = true;		
 	} else {
 		getUserStatsByDrill();
 		getUserStatsBySession();
-		content.displays.coach = false;
-		content.displays.player = true;
-		content.displays.all = true;
 	}
 };
 

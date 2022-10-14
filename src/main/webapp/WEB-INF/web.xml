@@ -93,6 +93,51 @@
       <param-value>/com/github/jeromerocheteau/basketballdb/users/update.sql</param-value>
     </init-param>
   </servlet>
+
+  <servlet>
+    <servlet-name>users-count</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.users.CountUsers</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/users/count.sql</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet>
+    <servlet-name>users-select</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.users.SelectSomeUsers</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/users/select-some.sql</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet>
+    <servlet-name>users-insert</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.users.InsertOneUser</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/users/insert.sql</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet>
+    <servlet-name>users-update</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.users.UpdateOneUser</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/users/update.sql</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet>
+    <servlet-name>users-delete</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.users.DeleteOneUser</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/users/delete.sql</param-value>
+    </init-param>
+  </servlet>
     
   <!-- users servlets mappings -->
   
@@ -119,6 +164,31 @@
   <servlet-mapping>
     <servlet-name>users-profile</servlet-name>
     <url-pattern>/users/profile</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>users-count</servlet-name>
+    <url-pattern>/users/count</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>users-select</servlet-name>
+    <url-pattern>/users/select</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>users-insert</servlet-name>
+    <url-pattern>/users/insert</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>users-update</servlet-name>
+    <url-pattern>/users/update</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>users-delete</servlet-name>
+    <url-pattern>/users/delete</url-pattern>
   </servlet-mapping>
 
   <!-- drills servlets -->
@@ -296,6 +366,11 @@
       <url-pattern>/drills.js</url-pattern>
       <url-pattern>/players.js</url-pattern>
       <url-pattern>/scores.js</url-pattern>
+      <url-pattern>/users/count</url-pattern>
+      <url-pattern>/users/select</url-pattern>
+      <url-pattern>/users/insert</url-pattern>
+      <url-pattern>/users/update</url-pattern>
+      <url-pattern>/users/delete</url-pattern>
       <url-pattern>/drills/count</url-pattern>
       <url-pattern>/drills/select</url-pattern>
       <url-pattern>/drills/insert</url-pattern>

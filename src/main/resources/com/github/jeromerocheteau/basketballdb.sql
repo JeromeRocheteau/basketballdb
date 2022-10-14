@@ -6,8 +6,8 @@ drop table if exists `users`;
 
 create table if not exists `users` (
   `username` varchar(90) not null,
-  `password` varchar(90) null default null,
-  `rolename` enum('coach', 'player') not null,
+  `password` varchar(90) not null default (md5('player')),
+  `rolename` enum('coach', 'player') not null default 'player',
   `firstname` varchar(90) not null,
   `lastname` varchar(90) not null,
   `gender` tinyint(1) not null,
@@ -22,6 +22,7 @@ create table if not exists `drills` (
   `duration` time not null,
   `min` int(11) not null,
   `max` int(11) not null,
+  `color` varchar(9) not null default "#555555",
   `owner` varchar(90) not null,
   primary key(`id`),
   foreign key(`owner`) references `users`(`username`) on update cascade on delete cascade
@@ -39,25 +40,27 @@ create table if not exists `scores` (
   foreign key(`user`) references `users`(`username`) on update cascade on delete cascade
 );
 
-insert into `users` (`username`,`password`,`rolename`,`firstname`,`lastname`,`gender`) values 
-('jerome.rocheteau@basketball.db', md5('coach'),  'coach',  'Jérôme',  'Rocheteau', true),
-('elise.trelohan@basketball.db',   md5('player'), 'player', 'Elise',   'Trélohan',  false),
-('marion.guillaume@basketball.db', md5('player'), 'player', 'Marion',  'Guillaume', false),
-('maissa.azzam@basketball.db',     md5('player'), 'player', 'Maïssa',  'Azzam',     false),
-('celia.baudoin@basketball.db',    md5('player'), 'player', 'Célia',   'Baudoin',   false),
-('maiwenn.gicquel@basketball.db',  md5('player'), 'player', 'Maïwenn', 'Gicquel',   false),
-('isa.azzam@basketball.db',        md5('player'), 'player', 'Isa',     'Azzam',     false),
-('lea.paboeuf@basketball.db',      md5('player'), 'player', 'Léa',     'Pabœuf',    false),
-('jade.montois@basketball.db',     md5('player'), 'player', 'Jade',    'Montois',   false),
-('adele.lefeuvre@basketball.db',   md5('player'), 'player', 'Adèle',   'Lefeuvre',  false),
-('koline.osseyi@basketball.db',    md5('player'), 'player', 'Koline',  'Osseyi',    false),
-('margot.rialland@basketball.db',  md5('player'), 'player', 'Margot',  'Rialland',  false);
+insert into `users` (`username`,`password`,`rolename`,`firstname`,`lastname`,`gender`, `birthday`) values 
+('jerome.rocheteau@basketball.db', md5('coach'),  'coach',  'Jérôme',  'Rocheteau', true, '1977-07-14');
 
-insert into `drills` (`duration`,`min`,`max`,`owner`,`name`,`desc`) values 
-('00:00:45', '0', '30', 'jerome.rocheteau@basketball.db', 'Johannès', 'Épreuve de tirs en course sur départ arrếté'),
-('00:00:45', '0', '30', 'jerome.rocheteau@basketball.db', 'Batum',    'Épreuve de tirs en course lancé dans le dribble et de passes'),
-('00:00:45', '0', '30', 'jerome.rocheteau@basketball.db', 'Fournier', 'Épreuve de lancers-francs'),
-('00:00:45', '0', '45', 'jerome.rocheteau@basketball.db', 'Gruda',    'Épreuve de tirs extérieurs');
+insert into `users` (`username`,`firstname`,`lastname`,`gender`) values 
+('elise.trelohan@basketball.db',   'Elise',   'Trélohan',  false),
+('marion.guillaume@basketball.db', 'Marion',  'Guillaume', false),
+('maissa.azzam@basketball.db',     'Maïssa',  'Azzam',     false),
+('celia.baudoin@basketball.db',    'Célia',   'Baudoin',   false),
+('maiwenn.gicquel@basketball.db',  'Maïwenn', 'Gicquel',   false),
+('isa.azzam@basketball.db',        'Isa',     'Azzam',     false),
+('lea.paboeuf@basketball.db',      'Léa',     'Pabœuf',    false),
+('jade.montois@basketball.db',     'Jade',    'Montois',   false),
+('adele.lefeuvre@basketball.db',   'Adèle',   'Lefeuvre',  false),
+('koline.osseyi@basketball.db',    'Koline',  'Osseyi',    false),
+('margot.rialland@basketball.db',  'Margot',  'Rialland',  false);
+
+insert into `drills` (`duration`,`min`,`max`,`color`,`owner`,`name`,`desc`) values 
+('00:00:45', '0', '30', '#0000ff', 'jerome.rocheteau@basketball.db', 'Johannès', 'Épreuve de tirs en course sur départ arrếté'),
+('00:00:45', '0', '30', '#00ff00', 'jerome.rocheteau@basketball.db', 'Batum',    'Épreuve de tirs en course lancé dans le dribble et de passes'),
+('00:00:45', '0', '30', '#ff0000', 'jerome.rocheteau@basketball.db', 'Fournier', 'Épreuve de lancers-francs'),
+('00:00:45', '0', '45', '#000000', 'jerome.rocheteau@basketball.db', 'Gruda',    'Épreuve de tirs extérieurs');
 
 INSERT INTO `scores` (`date`,`drill`,`user`,`value`) VALUES
 ("2021-11-25 19:00:00",2,"elise.trelohan@basketball.db",4),

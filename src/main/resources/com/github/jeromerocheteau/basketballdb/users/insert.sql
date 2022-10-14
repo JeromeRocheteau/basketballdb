@@ -1,2 +1,2 @@
-insert into `users` (`username`,`password`,`rolename`,`firstname`,`lastname`,`gender`) 
-values (?, md5(?), ?, ?, ?, ?);
+insert into `users` (`username`,`firstname`,`lastname`,`gender`,`birthday`) 
+values (?, ?, ?, ?, ?);

@@ -61,7 +61,25 @@
         <h1 class="display-4">BasketballDB <small class="lead">monitoring and analysing</small></h1>
       </div>
     </section>
-    <section id="player" class="container-fluid px-5" rv-show="displays.player">
+    
+    <section id="parameters" class="container-fluid px-5 pt-2 pb-5">
+      <form class="row d-flex align-content-start">
+        <div class="col input-group">
+          <span class="input-group-text" id="scores-start">Start</span>
+          <input type="date" class="form-control" id="scores-start" rv-value="statistics.start">
+        </div>
+        <div class="col input-group">
+          <span class="input-group-text" id="scores-stop">Stop</span>
+          <input type="date" class="form-control" id="scores-stop" rv-value="statistics.stop">
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-outline-secondary" rv-on-click="statistics.doReset">Cancel</button>
+          <button type="button" class="btn btn-outline-primary" rv-on-click="statistics.doUpdate">Update</button>
+        </div>
+      </form>
+    </section>
+    
+    <section id="player" class="container-fluid px-5" rv-show="display" rv-hide="users.role">
       <div class="row">
         <ul class="nav nav-tabs" id="user-tab" role="tablist">
           <li class="nav-item">
@@ -91,22 +109,6 @@
                     </p>
                   </div>
                 </div>
-               <form class="mt-5 py-1 border-top border-dark">
-                 <fieldset>
-                   <div class="mb-3">
-                     <label for="scores-start" class="form-label">Start</label>
-                     <input type="date" class="form-control" id="scores-start" rv-value="statistics.start">
-                   </div>
-                   <div class="mb-3">
-                     <label for="scores-stop" class="form-label">Stop</label>
-                     <input type="date" class="form-control" id="scores-stop" rv-value="statistics.stop">
-                   </div>
-                    <div class="text-end d-flex">
-                      <button type="button" class="btn btn-outline-secondary me-auto" rv-on-click="statistics.doReset">Cancel</button>
-                      <button type="button" class="btn btn-outline-primary" rv-on-click="statistics.doUpdate">Update</button>
-                    </div>
-                 </fieldset>
-               </form>
               </div>
             </div>
             <div class="col-9 order-last">
@@ -135,22 +137,6 @@
                 </div>
               </div>
             </div>
-             <form class="mt-5 py-1 border-top border-dark">
-               <fieldset>
-                 <div class="mb-3">
-                   <label for="scores-start" class="form-label">Start</label>
-                   <input type="date" class="form-control" id="scores-start" rv-value="statistics.start">
-                 </div>
-                 <div class="mb-3">
-                   <label for="scores-stop" class="form-label">Stop</label>
-                   <input type="date" class="form-control" id="scores-stop" rv-value="statistics.stop">
-                 </div>
-                  <div class="text-end d-flex">
-                    <button type="button" class="btn btn-outline-secondary me-auto" rv-on-click="statistics.doReset">Cancel</button>
-                    <button type="button" class="btn btn-outline-primary" rv-on-click="statistics.doUpdate">Update</button>
-                  </div>
-               </fieldset>
-             </form>
           </div>
           <div class="col-9 order-last">
             <h6 class="display-6" rv-show="users.scores">Scores for <span rv-text="statistics.drill.name"></span></h6>
@@ -191,7 +177,7 @@
         </div>
       </div>
     </section>
-    <footer id="footer" class="footer pt-5" rv-show="displays.all">
+    <footer id="footer" class="footer pt-5" rv-show="display">
       <p class="text-center">Copyright © 2022. Jérôme Rocheteau. All rights reserved.</p>
     </footer>
   </body>

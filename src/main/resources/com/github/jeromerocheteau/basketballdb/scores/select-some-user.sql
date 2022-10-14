@@ -8,6 +8,7 @@ select
   d.`duration` as `drill_duration`,
   d.`min` as `drill_min`,
   d.`max` as `drill_max`,
+  d.`color` as `drill_color`,
   u.`username` as `user_username`,
   u.`rolename` as `user_rolename`,
   u.`firstname` as `user_firstname`,

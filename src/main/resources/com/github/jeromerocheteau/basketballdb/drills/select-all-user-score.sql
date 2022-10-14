@@ -4,7 +4,8 @@ SELECT
   d.`desc` as `desc`,
   d.`duration` as `duration`,
   d.`min` as `min`,
-  d.`max` as `max`
+  d.`max` as `max`,
+  d.`color` as `color`
 from `scores` as s
 inner join `users` as u on u.`username` = s.`user`
 inner join `drills` as d on d.`id` = s.`drill`

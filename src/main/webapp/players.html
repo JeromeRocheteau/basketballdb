@@ -29,10 +29,10 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent" rv-if="users.role">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link active" href="./drills.html">Drills</a>
+                <a class="nav-link" href="./players.html">Drills</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="./players.html">Players</a>
+                <a class="nav-link active" href="./players.html">Players</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="./scores.html">Scores</a>
@@ -68,76 +68,75 @@
     <section class="container-fluid px-5">
     
       <div class="row justify-content-between">
-        <h4 class="h4 display-6">Drills <small>(<span rv-text="drills.count"></span> elements)</small></h4>
-        <div class="col-6 align-items-start" rv-show="drills.items">
+        <h4 class="h4 display-6">Players <small>(<span rv-text="players.count"></span> elements)</small></h4>
+        <div class="col-6 align-items-start" rv-show="players.items">
           <div class="list-group list-group-flush">
-            <div class="list-group-item list-group-item-action" aria-current="true" rv-each-drill="drills.items" rv-on-click="drills.doSelect">
+            <div class="list-group-item list-group-item-action" aria-current="true" rv-each-player="players.items" rv-on-click="players.doSelect">
               <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1" rv-text="drill.name"></h5>
-                <small rv-text="drill.duration | duration"></small>
+                <h6 class="mb-1"><span rv-text="player.firstname"></span> <span rv-text="player.lastname"></span></h6>
+                <small rv-text="player.birthday"></small>
               </div>
-              <p class="mb-1" rv-text="drill.desc"></p>
-              <small>{drill.min} - {drill.max}</small>
+              <p class="mb-1" rv-text="player.username"></p>
             </div>
           </div>      
           <nav>
             <ul class="pagination d-flex justify-content-center">
               <li class="page-item">
-                <button class="page-link" rv-on-click="drills.doFirst"><i class="bi-skip-backward"></i></button>
+                <button class="page-link" rv-on-click="players.doFirst"><i class="bi-skip-backward"></i></button>
               </li>
               <li class="page-item me-auto">
-                <button class="page-link" rv-on-click="drills.doPrev"><i class="bi-caret-left"></i></button>
+                <button class="page-link" rv-on-click="players.doPrev"><i class="bi-caret-left"></i></button>
               </li>
               <li class="page-item">
-                <button class="page-link" rv-on-click="drills.doNext"><i class="bi-caret-right"></i></button>
+                <button class="page-link" rv-on-click="players.doNext"><i class="bi-caret-right"></i></button>
               </li>
               <li class="page-item">
-                <button class="page-link" rv-on-click="drills.doLast"><i class="bi-skip-forward"></i></button>
+                <button class="page-link" rv-on-click="players.doLast"><i class="bi-skip-forward"></i></button>
               </li>
             </ul>
           </nav>
           <div class="text-end">
-            <button type="button" class="btn btn-outline-primary" rv-disabled="drills.item" rv-on-click="drills.doCreate">Add</button>
+            <button type="button" class="btn btn-outline-primary" rv-disabled="players.item" rv-on-click="players.doCreate">Add</button>
           </div>
         </div>
         <div class="col-6">
           
-          <form rv-show="drills.item">
+          <form rv-show="players.item">
             <fieldset>
-              <legend>Drill</legend>
+              <legend>Player</legend>
               <div class="mb-3">
-                <label for="drill-name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="drill-name" rv-value="drills.item.name">
+                <label for="player-username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="player-username" rv-value="players.item.username">
               </div>
               <div class="mb-3">
-                <label for="drill-desc" class="form-label">Description</label>
-                <textarea class="form-control" id="drill-desc" rows="3" rv-value="drills.item.desc"></textarea>
+                <label for="player-firstname" class="form-label">Firstname</label>
+                <input type="text" class="form-control" id="player-firstname" rv-value="players.item.firstname">
+              </div>
+              <div class="mb-3">
+                <label for="player-lastname" class="form-label">Lastname</label>
+                <input type="text" class="form-control" id="player-lastname" rv-value="players.item.lastname">
               </div>
               <div class="mb-3 row">
                 <div class="col">
-                  <label for="drill-duration" class="form-label">Duration</label>
-                  <input type="text" class="form-control" id="drill-duration" pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}" rv-value="drills.item.duration">
+                  <label for="player-birthday" class="form-label">Birthday</label>
+                  <input type="date" class="form-control" id="player-birthday" rv-value="players.item.birthday">
                 </div>
-                <div class="col">
-                  <label for="drill-color" class="form-label">Color</label>
-                  <input type="color" class="form-control form-control-color" id="drill-color" rv-value="drills.item.color">
+                
+                <div class="col form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="player-gender" rv-checked="players.item.gender">
+                  <label class="form-check-label" for="player-gender">Gender</label>
                 </div>
-              </div>
-              <div class="mb-3 row">
-                <div class="col">
-                  <label for="drill-min" class="form-label">Minimum</label>
-                <input type="number" class="form-control" id="drill-min" rv-value="drills.item.min">
-                </div>
-                <div class="col">
-                  <label for="drill-max" class="form-label">Maximum</label>
-                <input type="number" class="form-control" id="drill-max" rv-value="drills.item.max">
-                </div>
+                  
+                <!-- div class="col">
+                  <label for="player-gender" class="form-label">Gender</label>
+                  <input type="text" class="form-control" id="player-gender" rv-value="players.item.gender">
+                </div -->
               </div>
               <div class="text-end d-flex">
-                <button type="reset" class="btn btn-outline-secondary me-auto" rv-enabled="drills.item" rv-on-click="drills.doClear">Cancel</button>
-                <button type="button" class="btn btn-outline-primary" rv-enabled="drills.item" rv-show="drills.isCreating" rv-on-click="drills.doInsert">Insert</button>
-                <button type="button" class="btn btn-outline-danger" rv-enabled="drills.item" rv-show="drills.isUpdating" rv-on-click="drills.doDelete">Delete</button>
-                <button type="button" class="btn btn-outline-primary" rv-enabled="drills.item" rv-show="drills.isUpdating" rv-on-click="drills.doUpdate">Update</button>
+                <button type="reset" class="btn btn-outline-secondary me-auto" rv-enabled="players.item" rv-on-click="players.doClear">Cancel</button>
+                <button type="button" class="btn btn-outline-primary" rv-enabled="players.item" rv-show="players.isCreating" rv-on-click="players.doInsert">Insert</button>
+                <button type="button" class="btn btn-outline-danger" rv-enabled="players.item" rv-show="players.isUpdating" rv-on-click="players.doDelete">Delete</button>
+                <button type="button" class="btn btn-outline-primary" rv-enabled="players.item" rv-show="players.isUpdating" rv-on-click="players.doUpdate">Update</button>
               </div>
             </fieldset>
           </form>
@@ -150,5 +149,5 @@
     </footer>
   </body>
   <script type="text/javascript" src="./basketballdb.js"></script>
-  <script type="text/javascript" src="./drills.js"></script>
+  <script type="text/javascript" src="./players.js"></script>
 </html>

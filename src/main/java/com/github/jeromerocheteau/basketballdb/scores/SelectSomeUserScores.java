@@ -57,6 +57,7 @@ public class SelectSomeUserScores extends SelectAll<Score> {
 			Time drillDuration = resultSet.getTime("drill_duration");
 			Integer drillMin = resultSet.getInt("drill_min");
 			Integer drillMax = resultSet.getInt("drill_max");
+			String drillColor = resultSet.getString("drill_color");
 			String userUsername = resultSet.getString("user_username");
 			String userRolename = resultSet.getString("user_rolename");
 			String userFirstname = resultSet.getString("user_firstname");
@@ -64,7 +65,7 @@ public class SelectSomeUserScores extends SelectAll<Score> {
 			Boolean userGender = resultSet.getBoolean("user_gender");
 			Date userBirthday = resultSet.getDate("user_birthday");
 			User user = new User(userUsername, userRolename, userFirstname, userLastname, userGender, userBirthday);
-			Drill drill = new Drill(drillId, drillName, drillDesc, drillDuration, drillMin, drillMax, null);
+			Drill drill = new Drill(drillId, drillName, drillDesc, drillDuration, drillMin, drillMax, drillColor, null);
 			Score score = new Score(id, date, drill, user, value);
 			scores.add(score);
 		}

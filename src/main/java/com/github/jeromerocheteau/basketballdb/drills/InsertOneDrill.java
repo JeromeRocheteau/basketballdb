@@ -40,12 +40,14 @@ public class InsertOneDrill extends JdbcUpdateServlet<Integer> {
 		long duration = formatter.parse(string).getTime();
 		Integer min = Integer.valueOf(request.getParameter("min"));
 		Integer max = Integer.valueOf(request.getParameter("max"));
+		String color = request.getParameter("color");
 		statement.setString(1, name);
 		statement.setString(2, desc);
 		statement.setTime(3, new Time(duration));
 		statement.setInt(4, min);
 		statement.setInt(5, max);
-		statement.setString(6, owner);
+		statement.setString(6, color);
+		statement.setString(7, owner);
 	}
 	
 	@Override

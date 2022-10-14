@@ -1,2 +1,2 @@
 delete from `users`
-where `username` = ?;
+where `username` = ? and `username` <> ?;

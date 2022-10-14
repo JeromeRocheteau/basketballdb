@@ -145,6 +145,102 @@ basketballdb.users.statsByDrill = function(start, stop, onSuccess, onError) {
   req.send(null);    
 };
 
+/* users / players */
+
+basketballdb.players = {};
+
+basketballdb.players.count = function(onSuccess, onError) {
+  const req = new XMLHttpRequest();
+  req.onload = function(event) {
+    if (this.status === 200) {
+      onSuccess(JSON.parse(this.responseText));
+    } else {
+      onError(this.responseText);
+    }
+  };
+  req.onerror = function(event) {
+    onError(this.responseText);
+  }
+  req.open('GET','./users/count', true);
+  req.send(null);    
+};
+
+basketballdb.players.select = function(offset, length, onSuccess, onError) {
+  const req = new XMLHttpRequest();
+  req.onload = function(event) {
+    if (this.status === 200) {
+      onSuccess(JSON.parse(this.responseText));
+    } else {
+      onError(this.responseText);
+    }
+  };
+  req.onerror = function(event) {
+    onError(this.responseText);
+  }
+  const parameters = '?offset=' + offset + '&length=' + length; 
+  req.open('GET','./users/select' + parameters, true);
+  req.send(null);    
+};
+
+basketballdb.players.insert = function(data, onSuccess, onError) {
+  const req = new XMLHttpRequest();
+  req.onload = function(event) {
+    if (this.status === 200) {
+      onSuccess(JSON.parse(this.responseText));
+    } else {
+      onError(this.responseText);
+    }
+  };
+  req.onerror = function(event) {
+    onError(this.responseText);
+  }
+  const parameters = "?username=" + encodeURIComponent(data.username) 
+  + "&firstname=" + encodeURIComponent(data.firstname) 
+  + "&lastname=" + encodeURIComponent(data.lastname)
+  + "&gender=" + encodeURIComponent(data.gender)
+  + (data.birthday ? "&birthday=" + encodeURIComponent(data.birthday) : "");
+  req.open('POST','./users/insert' + parameters, true);
+  req.send(null);    
+};
+
+basketballdb.players.update = function(data, onSuccess, onError) {
+  const req = new XMLHttpRequest();
+  req.onload = function(event) {
+    if (this.status === 200) {
+      onSuccess(JSON.parse(this.responseText));
+    } else {
+      onError(this.responseText);
+    }
+  };
+  req.onerror = function(event) {
+    onError(this.responseText);
+  }
+  const parameters = "?username=" + encodeURIComponent(data.username) 
+  + "&firstname=" + encodeURIComponent(data.firstname) 
+  + "&lastname=" + encodeURIComponent(data.lastname)
+  + "&gender=" + encodeURIComponent(data.gender)
+  + (data.birthday ? "&birthday=" + encodeURIComponent(data.birthday) : "");
+  req.open('POST','./users/update' + parameters, true);
+  req.send(null);    
+};
+
+basketballdb.players.delete = function(data, onSuccess, onError) {
+  const req = new XMLHttpRequest();
+  req.onload = function(event) {
+    if (this.status === 200) {
+      onSuccess(JSON.parse(this.responseText));
+    } else {
+      onError(this.responseText);
+    }
+  };
+  req.onerror = function(event) {
+    onError(this.responseText);
+  }
+  const parameters = "?username=" + encodeURIComponent(data.username);
+  req.open('POST','./users/delete' + parameters, true);
+  req.send(null);    
+};
+
 /* drills */
 
 basketballdb.drills = {};
@@ -198,7 +294,8 @@ basketballdb.drills.insert = function(data, onSuccess, onError) {
   + "&desc=" + encodeURIComponent(data.desc) 
   + "&duration=" + encodeURIComponent(data.duration)
   + "&min=" + encodeURIComponent(data.min)
-  + "&max=" + encodeURIComponent(data.max);
+  + "&max=" + encodeURIComponent(data.max)
+  + "&color=" + encodeURIComponent(data.color);
   req.open('POST','./drills/insert' + parameters, true);
   req.send(null);    
 };
@@ -220,7 +317,8 @@ basketballdb.drills.update = function(data, onSuccess, onError) {
   + "&desc=" + encodeURIComponent(data.desc) 
   + "&duration=" + encodeURIComponent(data.duration)
   + "&min=" + encodeURIComponent(data.min)
-  + "&max=" + encodeURIComponent(data.max);
+  + "&max=" + encodeURIComponent(data.max)
+  + "&color=" + encodeURIComponent(data.color);
   req.open('POST','./drills/update' + parameters, true);
   req.send(null);    
 };

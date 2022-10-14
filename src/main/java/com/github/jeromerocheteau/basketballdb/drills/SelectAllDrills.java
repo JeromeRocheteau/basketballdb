@@ -31,7 +31,8 @@ public class SelectAllDrills extends SelectAll<Drill> {
 			Time duration = resultSet.getTime("duration");
 			Integer min = resultSet.getInt("min");
 			Integer max = resultSet.getInt("max");
-			Drill drill = new Drill(id, name, desc, duration, min, max, null);
+			String color = resultSet.getString("color");
+			Drill drill = new Drill(id, name, desc, duration, min, max, color, null);
 			drills.add(drill);
 		}
 		return drills;
