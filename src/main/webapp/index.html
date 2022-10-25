@@ -66,15 +66,21 @@
       <form class="row d-flex align-content-start">
         <div class="col input-group">
           <span class="input-group-text" id="scores-start">Start</span>
-          <input type="date" class="form-control" id="scores-start" rv-value="statistics.start">
+          <input type="date" class="form-control" id="scores-start" rv-value="parameters.start">
         </div>
         <div class="col input-group">
           <span class="input-group-text" id="scores-stop">Stop</span>
-          <input type="date" class="form-control" id="scores-stop" rv-value="statistics.stop">
+          <input type="date" class="form-control" id="scores-stop" rv-value="parameters.stop">
+        </div>
+        <div class="col input-group">
+          <span class="input-group-text" id="scores-mode">Mode</span>
+          <select class="form-select" id="scores-mode" rv-value="parameters.mode">
+            <option rv-each-option="parameters.options" rv-value="option.value" rv-text="option.text"></option>
+          </select>
         </div>
         <div class="col">
-          <button type="button" class="btn btn-outline-secondary" rv-on-click="statistics.doReset">Cancel</button>
-          <button type="button" class="btn btn-outline-primary" rv-on-click="statistics.doUpdate">Update</button>
+          <button type="button" class="btn btn-outline-secondary" rv-on-click="parameters.doReset">Cancel</button>
+          <button type="button" class="btn btn-outline-primary" rv-on-click="parameters.doUpdate">Update</button>
         </div>
       </form>
     </section>
@@ -88,13 +94,15 @@
           <li class="nav-item">
             <button class="nav-link" id="scores-tab" data-bs-toggle="tab" data-bs-target="#scores" type="button" role="tab" aria-controls="scores" aria-selected="true">Scores</button> 
           </li>
+          <li class="nav-item">
+            <button class="nav-link" id="scores-tab" data-bs-toggle="tab" data-bs-target="#drills" type="button" role="tab" aria-controls="drills" aria-selected="true">Drills</button> 
+          </li>
         </ul>
       </div>
       <div class="tab-content" id="user-tab-content">
         <div class="tab-pane fade show active" id="stats" role="tabpanel" aria-labelledby="stats-tab">
           <div class="row justify-content-center pt-5">
             <div class="col-3 order-first">
-              <h4 class="h4 display-6">Statistics</h4>
               <div class="align-items-start">
                 <div class="list-group list-group-flush">
                   <div class="list-group-item" aria-current="true" rv-each-stats="users.statsByDrill">
@@ -121,10 +129,9 @@
         <div class="tab-pane fade" id="scores" role="tabpanel" aria-labelledby="scores-tab">
           <div class="row justify-content-center pt-5">
           <div class="col-3 order-first">
-            <h4 class="h4 display-6">Drills</h4>
             <div class="align-items-start">
               <div class="list-group list-group-flush">
-                <div class="list-group-item list-group-item-action" aria-current="true" rv-each-stats="users.statsByDrill" rv-on-click="statistics.doSelect">
+                <div class="list-group-item list-group-item-action" aria-current="true" rv-each-stats="users.statsByDrill" rv-on-click="parameters.doSelect">
                   <div class="d-flex w-100 justify-content-between">
                     <p class="mb-1" rv-text="stats.drill.name"></p>
                     <p>avg: <span rv-text="stats.average | float"></span></p>
@@ -139,7 +146,7 @@
             </div>
           </div>
           <div class="col-9 order-last">
-            <h6 class="display-6" rv-show="users.scores">Scores for <span rv-text="statistics.drill.name"></span></h6>
+            <h6 class="display-6" rv-show="users.scores">Scores for <span rv-text="parameters.drill.name"></span></h6>
             <table class="table table-hover fw-light fs-6" rv-show="users.scores">
               <thead>
                 <tr>
@@ -170,11 +177,40 @@
               </tfoot>
             </table>
             <div class="text-end d-flex">
-              <button type="button" class="btn btn-outline-secondary me-auto" rv-show="users.scores" rv-on-click="statistics.doClear">Clear</button>
+              <button type="button" class="btn btn-outline-secondary me-auto" rv-show="users.scores" rv-on-click="parameters.doClear">Clear</button>
             </div>
           </div>
           </div>
         </div>
+
+        <div class="tab-pane fade show" id="drills" role="tabpanel" aria-labelledby="drills-tab">
+          <div class="row justify-content-center pt-5">
+            <div class="col-3 order-first">
+            <div class="align-items-start">
+              <div class="list-group list-group-flush">
+                <div class="list-group-item list-group-item-action" aria-current="true" rv-each-stats="users.statsByDrill" rv-on-click="parameters.doPick">
+                  <div class="d-flex w-100 justify-content-between">
+                    <p class="mb-1" rv-text="stats.drill.name"></p>
+                    <p>avg: <span rv-text="stats.average | float"></span></p>
+                  </div>
+                  <p class="mb-1 d-flex w-100 justify-content-between">
+                    <small>count: <span rv-text="stats.count"></span></small>
+                    <small>min: <span rv-text="stats.min"></span></small>
+                    <small>max: <span rv-text="stats.max"></span></small>
+                  </p>
+                </div>
+              </div>
+            </div>
+            </div>
+            <div class="col-9 order-last">
+              <div class="chart-container">
+                <canvas id="player-drill-chart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
       </div>
     </section>
     <footer id="footer" class="footer pt-5" rv-show="display">
