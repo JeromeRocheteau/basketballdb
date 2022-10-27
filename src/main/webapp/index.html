@@ -72,12 +72,6 @@
           <span class="input-group-text" id="scores-stop">Stop</span>
           <input type="date" class="form-control" id="scores-stop" rv-value="parameters.stop">
         </div>
-        <div class="col input-group">
-          <span class="input-group-text" id="scores-mode">Mode</span>
-          <select class="form-select" id="scores-mode" rv-value="parameters.mode">
-            <option rv-each-option="parameters.options" rv-value="option.value" rv-text="option.text"></option>
-          </select>
-        </div>
         <div class="col">
           <button type="button" class="btn btn-outline-secondary" rv-on-click="parameters.doReset">Cancel</button>
           <button type="button" class="btn btn-outline-primary" rv-on-click="parameters.doUpdate">Update</button>
@@ -104,8 +98,33 @@
           <div class="row justify-content-center pt-5">
             <div class="col-3 order-first">
               <div class="align-items-start">
+                <h4><span rv-text="users.principal.firstname"></span>&nbsp;<span rv-text="users.principal.lastname"></span></h4>
                 <div class="list-group list-group-flush">
                   <div class="list-group-item" aria-current="true" rv-each-stats="users.statsByDrill">
+                    <div class="d-flex w-100 justify-content-between">
+                      <p class="mb-1" rv-text="stats.drill.name"></p>
+                      <p><span rv-text="stats.average | float"></span></p>
+                    </div>
+                    <p class="mb-1 d-flex w-100 justify-content-between">
+                      <small>count: <span rv-text="stats.count"></span></small>
+                      <small>min: <span rv-text="stats.min"></span></small>
+                      <small>max: <span rv-text="stats.max"></span></small>
+                    </p>
+                  </div>
+                </div>
+                  
+                <form class="mt-4">
+                  <div class="col input-group">
+                    <span class="input-group-text" id="scores-mode">Mode</span>
+                    <select class="form-select" id="scores-mode" rv-value="parameters.mode" rv-on-change="parameters.doMode">
+                      <option rv-each-option="parameters.options" rv-value="option.value" rv-text="option.text"></option>
+                    </select>
+                  </div>
+                </form>
+                  
+                <h6 class="mt-4">Overall Statistics</h6>
+                <div class="list-group list-group-flush text-danger">
+                  <div class="list-group-item" aria-current="true" rv-each-stats="groups.statsByDrill">
                     <div class="d-flex w-100 justify-content-between">
                       <p class="mb-1" rv-text="stats.drill.name"></p>
                       <p><span rv-text="stats.average | float"></span></p>
@@ -187,6 +206,7 @@
           <div class="row justify-content-center pt-5">
             <div class="col-3 order-first">
             <div class="align-items-start">
+              <h4><span rv-text="users.principal.firstname"></span>&nbsp;<span rv-text="users.principal.lastname"></span></h4>
               <div class="list-group list-group-flush">
                 <div class="list-group-item list-group-item-action" aria-current="true" rv-each-stats="users.statsByDrill" rv-on-click="parameters.doPick">
                   <div class="d-flex w-100 justify-content-between">
@@ -200,6 +220,20 @@
                   </p>
                 </div>
               </div>
+                <h6 class="mt-5">Overall Statistics</h6>
+                <div class="list-group list-group-flush text-danger">
+                  <div class="list-group-item" aria-current="true" rv-each-stats="groups.statsByDrill">
+                    <div class="d-flex w-100 justify-content-between">
+                      <p class="mb-1" rv-text="stats.drill.name"></p>
+                      <p><span rv-text="stats.average | float"></span></p>
+                    </div>
+                    <p class="mb-1 d-flex w-100 justify-content-between">
+                      <small>count: <span rv-text="stats.count"></span></small>
+                      <small>min: <span rv-text="stats.min"></span></small>
+                      <small>max: <span rv-text="stats.max"></span></small>
+                    </p>
+                  </div>
+                </div>
             </div>
             </div>
             <div class="col-9 order-last">
@@ -209,8 +243,6 @@
             </div>
           </div>
         </div>
-
-
       </div>
     </section>
     <footer id="footer" class="footer pt-5" rv-show="display">

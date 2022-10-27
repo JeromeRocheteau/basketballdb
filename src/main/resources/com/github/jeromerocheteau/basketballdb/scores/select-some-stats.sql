@@ -10,18 +10,10 @@ select
   d.`duration` as `drill_duration`,
   d.`min` as `drill_min`,
   d.`max` as `drill_max`,
-  d.`color` as `drill_color`,
-  u.`username` as `user_username`,
-  u.`rolename` as `user_rolename`,
-  u.`firstname` as `user_firstname`,
-  u.`lastname` as `user_lastname`,
-  u.`gender` as `user_gender`,
-  u.`birthday` as `user_birthday`
+  d.`color` as `drill_color`
 from `scores` as s
-inner join `users` as u on u.`username` = s.`user`
 inner join `drills` as d on d.`id` = s.`drill`
-where u.`username` = ? 
-  and ? <= s.`date` 
+where ? <= s.`date` 
   and s.`date` <= ?
 group by `drill_id`
 order by `drill_id`;

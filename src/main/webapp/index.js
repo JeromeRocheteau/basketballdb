@@ -12,41 +12,15 @@ rivets.formatters.time = function(value) {
 	return moment(value).format('HH:mm');
 };
 
-rivets.formatters.float = function(value){
-  return value.toFixed(2);
+rivets.formatters.float = function(value) {
+	return value.toFixed(2);
 }
-
-/* colors */
-
-var doLightenDarkenColor = function(col, amt) {
-    var usePound = false;
-    if (col[0] == "#") {
-        col = col.slice(1);
-        usePound = true;
-    }
-    var num = parseInt(col,16);
-    var r = (num >> 16) + amt;
-    if (r > 255) r = 255;
-    else if  (r < 0) r = 0;
-    var b = ((num >> 8) & 0x00FF) + amt;
-    if (b > 255) b = 255;
-    else if  (b < 0) b = 0;
-    var g = (num & 0x0000FF) + amt;
-    if (g > 255) g = 255;
-    else if (g < 0) g = 0;
-    return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
-};
-
-var transparentize = function(value, opacity) {
-  var alpha = opacity === undefined ? 0.5 : 1 - opacity;
-  return colorLib(value).alpha(alpha).rgbString();
-};
 
 /* users */
 
 content.users = {};
 content.users.role = false;
-			
+
 var getUserPrincipal = function() {
 	basketballdb.users.name(function onSuccess(response) {
 		content.users.principal = response;
@@ -69,13 +43,17 @@ var maximum = 20;
 
 content.colors = {};
 content.scores = {};
+
+content.groups = {};
+content.stats = {};
+
 content.parameters = {};
 content.parameters.mode = 1;
-content.parameters.options = [{value:1,code:"average",text:"average"},{value:2,code:"max",text:"maximum"},{value:3,code:"min",text:"minimum"},{value:4,code:"count",text:"count"}];
+content.parameters.options = [{ value: 1, code: "average", text: "average" }, { value: 2, code: "max", text: "maximum" }, { value: 3, code: "min", text: "minimum" }, { value: 4, code: "count", text: "count" }];
 
-var doEmpty = function() {
-	for (var i in content.scores) {
-		var scores = content.scores[i];
+var doEmpty = function(container) {
+	for (var i in container) {
+		var scores = container[i];
 		if (Array.isArray(scores['average'])) {
 			while (scores['average'].length > 0) {
 				scores['average'].pop();
@@ -99,41 +77,41 @@ var doEmpty = function() {
 	}
 };
 
-var setValues = function(items) {
-	doEmpty();
-    for (var i = 0; i < items.length; i++) {
+var setValues = function(container, items) {
+	doEmpty(container);
+	for (var i = 0; i < items.length; i++) {
 		try {
-		    var item = items[i];
-		    var drill = item.drill.name;
-		    // var player = item.user;
-		    var date = moment(item.date);
-			if (content.scores[drill]) {
+			var item = items[i];
+			var drill = item.drill.name;
+			// var player = item.user;
+			var date = moment(item.date);
+			if (container[drill]) {
 			} else {
-				content.scores[drill] = {};
+				container[drill] = {};
 			}
-			if (content.scores[drill]['average']) {
-				content.scores[drill]['average'].push({x : date, y: parseInt(item.average)});
+			if (container[drill]['average']) {
+				container[drill]['average'].push({ x: date, y: parseInt(item.average) });
 			} else {
-				content.scores[drill]['average'] = [];
-				content.scores[drill]['average'].push({x : date, y: parseInt(item.average)});
+				container[drill]['average'] = [];
+				container[drill]['average'].push({ x: date, y: parseInt(item.average) });
 			}
-			if (content.scores[drill]['max']) {
-				content.scores[drill]['max'].push({x : date, y: parseInt(item.max)});
+			if (container[drill]['max']) {
+				container[drill]['max'].push({ x: date, y: parseInt(item.max) });
 			} else {
-				content.scores[drill]['max'] = [];
-				content.scores[drill]['max'].push({x : date, y: parseInt(item.max)});
+				container[drill]['max'] = [];
+				container[drill]['max'].push({ x: date, y: parseInt(item.max) });
 			}
-			if (content.scores[drill]['min']) {
-				content.scores[drill]['min'].push({x : date, y: parseInt(item.min)});
+			if (container[drill]['min']) {
+				container[drill]['min'].push({ x: date, y: parseInt(item.min) });
 			} else {
-				content.scores[drill]['min'] = [];
-				content.scores[drill]['min'].push({x : date, y: parseInt(item.min)});
+				container[drill]['min'] = [];
+				container[drill]['min'].push({ x: date, y: parseInt(item.min) });
 			}
-			if (content.scores[drill]['count']) {
-				content.scores[drill]['count'].push({x : date, y: parseInt(item.count)});
+			if (container[drill]['count']) {
+				container[drill]['count'].push({ x: date, y: parseInt(item.count) });
 			} else {
-				content.scores[drill]['count'] = [];
-				content.scores[drill]['count'].push({x : date, y: parseInt(item.count)});
+				container[drill]['count'] = [];
+				container[drill]['count'].push({ x: date, y: parseInt(item.count) });
 			}
 			if (content.colors[drill]) {
 			} else {
@@ -148,9 +126,9 @@ var setValues = function(items) {
 			}
 			*/
 		} catch (error) {
-		    console.log(error);
+			console.log(error);
 		}
-    }
+	}
 };
 
 var getMode = function() {
@@ -170,40 +148,56 @@ var getMode = function() {
 var getDatasets = function() {
 	var mode = getMode();
 	var datasets = [];
-	for (var name in content.scores) {
+	for (var i = 0; i < content.groups.statsByDrill.length; i++) {
+		var item = content.groups.statsByDrill[i];
+		var name = item.drill.name;
 		var scores = content.scores[name][mode];
 		var color = "#555555";
 		if (content.colors[name]) {
 			color = content.colors[name];
 		}
 		if (Array.isArray(scores)) {
-			var dataset = { label: name, fill: false, tension : 0.4, backgroundColor: color, borderColor: color, data: scores };
+			var dataset = { label: name, fill: false, tension: 0.4, backgroundColor: color, borderColor: color, data: scores };
 			datasets.push(dataset);
-		};	
+		}
+	}
+	for (var i = 0; i < content.groups.statsByDrill.length; i++) {
+		var item = content.groups.statsByDrill[i];
+		var name = item.drill.name;
+		var scores = content.stats[name][mode];
+		var color = "#555555";
+		if (content.colors[name]) {
+			color = content.colors[name];
+		}
+		color = color + "50";
+		if (Array.isArray(scores)) {
+			var dataset = { label: name + " (overall)", fill: false, tension: 0.4, hidden : true, backgroundColor: color, borderColor: color, data: scores };
+			datasets.push(dataset);
+		}
 	}
 	return datasets;
 };
 
 var setChart = function() {
-    var label = content.users.principal.firstname + " " + content.users.principal.lastname;
+	var label = content.users.principal.firstname + " " + content.users.principal.lastname;
 	var datasets = getDatasets();
-    var context = document.getElementById('player-chart').getContext('2d');
-    var payload = {
+	var context = document.getElementById('player-chart').getContext('2d');
+	var payload = {
 		type: 'line',
 		data: { datasets: datasets },
-		options : {
-		    plugins : { title : { display : true, text: label}},
-		    scales : {
-				x: { type : 'time', time : {unit: 'day', displayFormats: { day: 'YYYY-MM-DD' }}, min: content.parameters.start, max: content.parameters.stop},
-				y : { type : 'linear', beginAtZero: true, suggestedMin : minimum, suggestedMax: maximum} 
-		    }
+		options: {
+			plugins: { title: { display: true, text: label } },
+			scales: {
+				x: { type: 'time', time: { unit: 'day', displayFormats: { day: 'YYYY-MM-DD' } }, min: content.parameters.start, max: content.parameters.stop },
+				y: { type: 'linear', beginAtZero: true, suggestedMin: minimum, suggestedMax: maximum }
+			}
 		}
-    };
-    if (chart) {
+	};
+	if (chart) {
 		chart.destroy();
-    } 
-    chart = new Chart(context, payload);
-    chart.update();
+	}
+	chart = new Chart(context, payload);
+	chart.update();
 };
 
 var getDrillName = function() {
@@ -221,49 +215,65 @@ var getDrillDatasets = function() {
 	var maxScores = content.scores[name]['max'];
 	var minScores = content.scores[name]['min'];
 	var countScores = content.scores[name]['count'];
+
+	var groupAverageScores = content.stats[name]['average'];
+	var groupMaxScores = content.stats[name]['max'];
+
 	var averageColor = content.colors[name];
 	var maxColor = averageColor + "30";
 	var minColor = averageColor + "30";
+
+	var groupColor = "#fcf3cf";
+	var groupBackgroungColor = groupColor + "50";
+
 	var countColor = "#555555";
 	if (Array.isArray(averageScores)) {
-		var dataset = { label: "average", fill: false, tension : 0.4, backgroundColor: averageColor, borderColor: averageColor, data: averageScores };
+		var dataset = { label: "Average", fill: false, tension: 0.4, backgroundColor: averageColor, borderColor: averageColor, data: averageScores };
 		datasets.push(dataset);
 	};
 	if (Array.isArray(maxScores)) {
-		var dataset = { label: "max", fill: false, tension : 0.4, fill : 2, backgroundColor: maxColor, borderColor: maxColor, data: maxScores };
+		var dataset = { label: "Maximum", fill: false, tension: 0.4, fill: 2, backgroundColor: maxColor, borderColor: maxColor, data: maxScores };
 		datasets.push(dataset);
 	};
 	if (Array.isArray(minScores)) {
-		var dataset = { label: "min", fill: false, tension : 0.4, backgroundColor: minColor, borderColor: minColor, data: minScores };
+		var dataset = { label: "Minimum", fill: false, tension: 0.4, backgroundColor: minColor, borderColor: minColor, data: minScores };
 		datasets.push(dataset);
 	};
-	if (Array.isArray(maxScores)) {
-		var dataset = { label: "count", fill: false, tension : 0.4, backgroundColor: countColor, borderColor: countColor, data: countScores };
+	if (Array.isArray(countScores)) {
+		var dataset = { label: "Count", fill: false, tension: 0.4, backgroundColor: countColor, borderColor: countColor, data: countScores };
+		datasets.push(dataset);
+	};
+	if (Array.isArray(groupAverageScores)) {
+		var dataset = { label: "Average (overall)", fill: false, tension: 0.4, fill: 5, backgroundColor: groupBackgroungColor, borderColor: groupColor, data: groupAverageScores };
+		datasets.push(dataset);
+	};
+	if (Array.isArray(groupMaxScores)) {
+		var dataset = { label: "Maximum (overall)", fill: false, tension: 0.4, backgroundColor: groupBackgroungColor, borderColor: groupColor, data: groupMaxScores };
 		datasets.push(dataset);
 	};
 	return datasets;
 };
 
 var setDrillChart = function() {
-    var label = content.users.principal.firstname + " " + content.users.principal.lastname;
+	var label = content.users.principal.firstname + " " + content.users.principal.lastname;
 	var datasets = getDrillDatasets();
-    var context = document.getElementById('player-drill-chart').getContext('2d');
-    var payload = {
+	var context = document.getElementById('player-drill-chart').getContext('2d');
+	var payload = {
 		type: 'line',
 		data: { datasets: datasets },
-		options : {
-		    plugins : { title : { display : true, text: label}},
-		    scales : {
-				x: { type : 'time', time : {unit: 'day', displayFormats: { day: 'YYYY-MM-DD' }}, min: content.parameters.start, max: content.parameters.stop},
-				y : { type : 'linear', beginAtZero: true, suggestedMin : minimum, suggestedMax: maximum} 
-		    }
+		options: {
+			plugins: { title: { display: true, text: label } },
+			scales: {
+				x: { type: 'time', time: { unit: 'day', displayFormats: { day: 'YYYY-MM-DD' } }, min: content.parameters.start, max: content.parameters.stop },
+				y: { type: 'linear', beginAtZero: true, suggestedMin: minimum, suggestedMax: maximum }
+			}
 		}
-    };
-    if (drillChart) {
+	};
+	if (drillChart) {
 		drillChart.destroy();
-    } 
-    drillChart = new Chart(context, payload);
-    drillChart.update();
+	}
+	drillChart = new Chart(context, payload);
+	drillChart.update();
 };
 
 var getUserScores = function() {
@@ -278,8 +288,11 @@ var getUserScores = function() {
 var getUserStatsBySession = function() {
 	basketballdb.users.statsBySession(content.parameters.start, content.parameters.stop, function onSuccess(response) {
 		content.users.statsBySession = response;
-		setValues(content.users.statsBySession);
+		setValues(content.scores, content.users.statsBySession);
 		setChart();
+		if (content.parameters.drill) {
+			setDrillChart();
+		}
 		content.display = true;
 	}, function onError(response) {
 		content.users.statsBySession = [];
@@ -290,8 +303,30 @@ var getUserStatsBySession = function() {
 var getUserStatsByDrill = function() {
 	basketballdb.users.statsByDrill(content.parameters.start, content.parameters.stop, function onSuccess(response) {
 		content.users.statsByDrill = response;
+		getUserStatsBySession();
 	}, function onError(response) {
 		content.users.statsByDrill = [];
+		console.log(response);
+	});
+};
+
+var getStatsBySession = function() {
+	basketballdb.stats.statsBySession(content.parameters.start, content.parameters.stop, function onSuccess(response) {
+		content.groups.statsBySession = response;
+		setValues(content.stats, content.groups.statsBySession);
+		getUserStatsByDrill();
+	}, function onError(response) {
+		content.groups.statsBySession = [];
+		console.log(response);
+	});
+};
+
+var getStatsByDrill = function() {
+	basketballdb.stats.statsByDrill(content.parameters.start, content.parameters.stop, function onSuccess(response) {
+		content.groups.statsByDrill = response;
+		getStatsBySession();
+	}, function onError(response) {
+		content.groups.statsByDrill = [];
 		console.log(response);
 	});
 };
@@ -302,6 +337,10 @@ content.parameters.doReset = function() {
 	content.parameters.doUpdate();
 };
 
+content.parameters.doMode = function() {
+	setChart();
+};
+
 content.parameters.doClear = function() {
 	content.users.scores = null;
 };
@@ -309,8 +348,7 @@ content.parameters.doClear = function() {
 content.parameters.doUpdate = function() {
 	if (content.users.role == true) {
 	} else {
-		getUserStatsByDrill();
-		getUserStatsBySession();
+		getStatsByDrill();
 	}
 };
 
@@ -321,18 +359,17 @@ content.parameters.doSelect = function(event, item) {
 	}, function onError(response) {
 		content.users.scores = [];
 		console.log(response);
-	});	
+	});
 };
 
 content.parameters.doPick = function(event, item) {
 	content.parameters.drill = item.stats.drill;
-	// console.log(content.parameters.drill);
 	setDrillChart();
 };
 
 /* init */
 
-var doInit = function () {
+var doInit = function() {
 	getUserPrincipal();
 	content.parameters.doReset();
 }

@@ -145,6 +145,44 @@ basketballdb.users.statsByDrill = function(start, stop, onSuccess, onError) {
   req.send(null);    
 };
 
+/* stats */
+
+basketballdb.stats = {};
+
+basketballdb.stats.statsBySession = function(start, stop, onSuccess, onError) {
+  const req = new XMLHttpRequest();
+  req.onload = function(event) {
+    if (this.status === 200) {
+      onSuccess(JSON.parse(this.responseText));
+    } else {
+      onError(this.responseText);
+    }
+  };
+  req.onerror = function(event) {
+    onError(this.responseText);
+  }
+  const parameters = '?start=' + start + '&stop=' + stop; 
+  req.open('GET','./stats/session' + parameters, true);
+  req.send(null);    
+};
+
+basketballdb.stats.statsByDrill = function(start, stop, onSuccess, onError) {
+  const req = new XMLHttpRequest();
+  req.onload = function(event) {
+    if (this.status === 200) {
+      onSuccess(JSON.parse(this.responseText));
+    } else {
+      onError(this.responseText);
+    }
+  };
+  req.onerror = function(event) {
+    onError(this.responseText);
+  }
+  const parameters = '?start=' + start + '&stop=' + stop; 
+  req.open('GET','./stats/drill' + parameters, true);
+  req.send(null);    
+};
+
 /* users / players */
 
 basketballdb.players = {};

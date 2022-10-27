@@ -90,7 +90,7 @@
     <servlet-class>com.github.jeromerocheteau.basketballdb.users.Profile</servlet-class>
     <init-param>
       <param-name>sql-query</param-name>
-      <param-value>/com/github/jeromerocheteau/basketballdb/users/update.sql</param-value>
+      <param-value>/com/github/jeromerocheteau/basketballdb/users/profile.sql</param-value>
     </init-param>
   </servlet>
 
@@ -302,6 +302,24 @@
       <param-value>/com/github/jeromerocheteau/basketballdb/scores/select-some-user-stats.sql</param-value>
     </init-param>
   </servlet>
+  
+  <servlet>
+    <servlet-name>session-stats</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.scores.SelectSomeStats</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/scores/select-some-session-stats.sql</param-value>
+    </init-param>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>drill-stats</servlet-name>
+    <servlet-class>com.github.jeromerocheteau.basketballdb.scores.SelectSomeStats</servlet-class>
+    <init-param>
+      <param-name>sql-query</param-name>
+      <param-value>/com/github/jeromerocheteau/basketballdb/scores/select-some-stats.sql</param-value>
+    </init-param>
+  </servlet>
     
   <!-- scores servlets mappings -->
   
@@ -323,6 +341,16 @@
   <servlet-mapping>
     <servlet-name>users-drill-stats</servlet-name>
     <url-pattern>/users/stats/drill</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>session-stats</servlet-name>
+    <url-pattern>/stats/session</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>drill-stats</servlet-name>
+    <url-pattern>/stats/drill</url-pattern>
   </servlet-mapping>
   
   <!-- constraints -->
@@ -350,6 +378,8 @@
       <url-pattern>/users/scores</url-pattern>
       <url-pattern>/users/stats/drill</url-pattern>
       <url-pattern>/users/stats/session</url-pattern>
+      <url-pattern>/stats/session</url-pattern>
+      <url-pattern>/stats/drill</url-pattern>
     </web-resource-collection>
     <auth-constraint>
       <role-name>player</role-name>
